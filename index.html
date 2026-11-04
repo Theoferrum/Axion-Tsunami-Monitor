@@ -247,40 +247,33 @@
       `https://freenewsapi.ai/v1/search?q=${encodeURIComponent(q)}&date=24h&size=1`,
       { headers: { 'Authorization': 'Bearer ' + API_KEY } }
     );
-
     const data = await res.json();
-
-    // Temporary: show the first response in the alert so we can see the real structure
-    if (q === 'anxiety') {
-      document.getElementById('alert').innerHTML = 
-        'Status: ' + res.status + '<br>' + JSON.stringify(data).substring(0, 300);
-    }
-
-    return data.total || 0;
+    return { status: res.status, data: data, total: data.total || 0 };
   } catch (e) {
-    return 0;
+    return { status: 'error', data: e.message, total: 0 };
   }
+}
+
+async function run() {
+  const alert = document.getElementById('alert');
+  alert.innerHTML = 'Fetching…';
+
+  // Only test the first channel so we can clearly see the response
+  const result = await getCount('anxiety');
+
+  alert.innerHTML = 
+    'Status: ' + result.status + '<br>' +
+    'Total: ' + result.total + '<br>' +
+    'Full response:<br>' + JSON.stringify(result.data).substring(0, 500);
+
+  // Still update the other bars with zeros for now
+  CHANNELS.forEach(ch => {
+    document.getElementById('b-' + ch).style.height = '0%';
+    document.getElementById('v-' + ch).innerText = '0';
+  });
     }
-
-    async function run() {
-      const alert = document.getElementById('alert');
-      alert.innerHTML = 'Fetching all channels…';
-
-      const results = await Promise.all(CHANNELS.map(ch => getCount(KEYWORDS[ch])));
-
-      // Show the numbers clearly and keep them
-      alert.innerHTML = results.map((n, i) => CHANNELS[i] + ': ' + n).join(' | ');
-
-      const counts = {}, metrics = {};
-      CHANNELS.forEach((ch, i) => {
-        counts[ch] = results[i];
-        metrics[ch] = Math.min(100, (results[i] / SCALE[ch]) * 100);
-      });
-      updateUI(metrics, counts);
-    }
-
-    run();
-    setInterval(run, 30000);
+    
+    
   </script>
 </body>
 </html>
