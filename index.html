@@ -413,14 +413,19 @@
     }
 
     async function run() {
-      document.getElementById('alert').innerHTML = 'Fetching… 🖕😜👌 🙄 - This is precisely why Aliens don’t visit… 👽';
-      const results = await Promise.all(CHANNELS.map(ch => getCount(KEYWORDS[ch])));
-      const counts = {}, metrics = {};
-      CHANNELS.forEach((ch, i) => {
-        counts[ch] = results[i];
-        metrics[ch] = Math.min(100, (results[i] / SCALE[ch]) * 100);
-      });
-      updateUI(metrics, counts);
+  document.getElementById('alert').innerHTML = 'Fetching…';
+  const results = await Promise.all(CHANNELS.map(ch => getCount(KEYWORDS[ch])));
+  
+  // Temporary: show the raw numbers
+  document.getElementById('alert').innerHTML = 
+    'Raw counts: ' + results.join(', ');
+
+  const counts = {}, metrics = {};
+  CHANNELS.forEach((ch, i) => {
+    counts[ch] = results[i];
+    metrics[ch] = Math.min(100, (results[i] / SCALE[ch]) * 100);
+  });
+  updateUI(metrics, counts);
     }
 
     setInterval(run, 30000);
