@@ -242,37 +242,37 @@
     }
 
     async function getCount(q) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
   try {
     const res = await fetch(
       `https://freenewsapi.ai/v1/search?q=${encodeURIComponent(q)}&date=24h&size=1`,
-      { headers: { 'Authorization': 'Bearer ' + API_KEY } }
+      {
+        headers: { 'Authorization': 'Bearer ' + API_KEY },
+        signal: controller.signal
+      }
     );
+    clearTimeout(timeout);
     const data = await res.json();
     return { status: res.status, data: data, total: data.total || 0 };
   } catch (e) {
+    clearTimeout(timeout);
     return { status: 'error', data: e.message, total: 0 };
   }
 }
 
 async function run() {
   const alert = document.getElementById('alert');
-  alert.innerHTML = 'Fetching…';
+  alert.innerHTML = 'Fetching anxiety… (max 10 seconds)';
 
-  // Only test the first channel so we can clearly see the response
   const result = await getCount('anxiety');
 
   alert.innerHTML = 
     'Status: ' + result.status + '<br>' +
     'Total: ' + result.total + '<br>' +
-    'Full response:<br>' + JSON.stringify(result.data).substring(0, 500);
-
-  // Still update the other bars with zeros for now
-  CHANNELS.forEach(ch => {
-    document.getElementById('b-' + ch).style.height = '0%';
-    document.getElementById('v-' + ch).innerText = '0';
-  });
+    'Response: ' + JSON.stringify(result.data).substring(0, 400);
     }
-    
     
   </script>
 </body>
