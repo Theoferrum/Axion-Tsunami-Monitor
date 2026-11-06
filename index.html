@@ -3,57 +3,280 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API Test</title>
+  <title>Axion Tsunami Monitor</title>
   <style>
-    body {
-      background: #0b0f19;
-      color: #e2e8f0;
-      font-family: system-ui, sans-serif;
-      padding: 20px;
-      line-height: 1.5;
+    :root {
+      --bg: #0b0f19;
+      --panel: #161f33;
+      --green: #00ff66;
+      --red: #ff3333;
+      --text: #e2e8f0;
     }
-    #result {
-      background: #161f33;
-      border: 1px solid #24355a;
+    * { box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Times New Roman", Times, serif;
+      font-size: 0.9rem;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .dashboard {
+      background: var(--panel);
+      border: 2px solid #24355a;
+      border-radius: 12px;
+      padding: 10px;
+      width: 99%;
+      max-width: 1180px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .header {
+      border-bottom: 2px dashed #24355a;
+      padding-bottom: 5px;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--green);
+      letter-spacing: 0.8px;
+    }
+    .status {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.6rem;
+      color: #718096;
+      margin-top: 4px;
+    }
+    .eq-container {
+      display: flex;
+      justify-content: center;
+      gap: 1px;
+      height: 380px;
+      align-items: flex-end;
+      padding: 2px 1px 6px;
+      background: rgba(0,0,0,0.3);
       border-radius: 8px;
-      padding: 15px;
-      white-space: pre-wrap;
-      font-size: 14px;
-      margin-top: 15px;
+      border: 1px solid #1e2d4a;
+      overflow: hidden;
+    }
+    .eq-channel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 4.5%;
+      min-width: 12px;
+      height: 100%;
+      justify-content: flex-end;
+    }
+    .label {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-size: 0.42rem;
+      text-align: center;
+      color: #a0aec0;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 0.2px;
+      margin-bottom: 3px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.05;
+    }
+    .bar-wrapper {
+      width: 6px;
+      height: 280px;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid #24355a;
+      border-radius: 2px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+    .bar-fill {
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(to top, #1e90ff 0%, #00ff66 25%, #ffcc00 55%, #ff8400 85%, #ff3333 100%);
+      transition: height 0.5s ease;
+    }
+    .val {
+      font-size: 0.42rem;
+      font-weight: bold;
+      margin-top: 2px;
+      color: #ffffff;
+    }
+    .controls {
+      display: flex;
+      margin-top: 5px;
+      gap: 6px;
+      align-items: center;
+    }
+    .alert-panel {
+      flex-grow: 1;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid #24355a;
+      border-radius: 6px;
+      padding: 5px 7px;
+      font-size: 0.52rem;
+      min-height: 30px;
+      display: flex;
+      align-items: center;
+      color: #e2e8f0;
+      line-height: 1.3;
+    }
+    .composite-wrapper {
+      margin-top: 4px;
+      width: 100%;
+      height: 12px;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid #24355a;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .composite-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(to right, #1e90ff 0%, #00ff66 25%, #ffcc00 55%, #ff8400 85%, #ff3333 100%);
+      transition: width 0.5s ease;
     }
   </style>
 </head>
 <body>
-  <h2>Free News API Test</h2>
-  <div id="result">Running test…</div>
+  <div class="dashboard">
+    <div class="header">
+      <h1>T Coronae Borealis Periodic Nova<br>Axion Tsunami Early Warning System<br>Brought to you by Theoferrum <span style="color: white;">~•</span> God Steel</h1>
+      <div class="status">
+        <span id="mode">Asymmetric Graphic Scaling • ETA Dec 2026 - Feb 2027 •</span>
+        <span id="clock">00:00:00 PT</span>
+      </div>
+    </div>
+
+    <div class="eq-container">
+      <div class="eq-channel"><div class="label">Societal<br>(anxiety)</div><div class="bar-wrapper"><div id="b-societal" class="bar-fill"></div></div><div id="v-societal" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Technical<br>(outage)</div><div class="bar-wrapper"><div id="b-technical" class="bar-fill"></div></div><div id="v-technical" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Individual<br>(murder)</div><div class="bar-wrapper"><div id="b-individual" class="bar-fill"></div></div><div id="v-individual" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Cultural<br>(riots)</div><div class="bar-wrapper"><div id="b-cultural" class="bar-fill"></div></div><div id="v-cultural" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Psychological<br>(shooting)</div><div class="bar-wrapper"><div id="b-psychological" class="bar-fill"></div></div><div id="v-psychological" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Political<br>(war)</div><div class="bar-wrapper"><div id="b-political" class="bar-fill"></div></div><div id="v-political" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Geological<br>(earthquake)</div><div class="bar-wrapper"><div id="b-geological" class="bar-fill"></div></div><div id="v-geological" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Meteorological<br>(storm)</div><div class="bar-wrapper"><div id="b-meteorological" class="bar-fill"></div></div><div id="v-meteorological" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Ideological<br>(chaos)</div><div class="bar-wrapper"><div id="b-ideological" class="bar-fill"></div></div><div id="v-ideological" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Geographical<br>(volcano)</div><div class="bar-wrapper"><div id="b-geographical" class="bar-fill"></div></div><div id="v-geographical" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Homicidal<br>(suicide)</div><div class="bar-wrapper"><div id="b-homicidal" class="bar-fill"></div></div><div id="v-homicidal" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Pathological<br>(anarchy)</div><div class="bar-wrapper"><div id="b-pathological" class="bar-fill"></div></div><div id="v-pathological" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Spiritual<br>(anomaly)</div><div class="bar-wrapper"><div id="b-spiritual" class="bar-fill"></div></div><div id="v-spiritual" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Physical<br>(knife)</div><div class="bar-wrapper"><div id="b-physical" class="bar-fill"></div></div><div id="v-physical" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Racial<br>(terrorist)</div><div class="bar-wrapper"><div id="b-racial" class="bar-fill"></div></div><div id="v-racial" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Astronomical<br>(aurora)</div><div class="bar-wrapper"><div id="b-astronomical" class="bar-fill"></div></div><div id="v-astronomical" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Territorial<br>(attack)</div><div class="bar-wrapper"><div id="b-territorial" class="bar-fill"></div></div><div id="v-territorial" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Sexual<br>(rape)</div><div class="bar-wrapper"><div id="b-sexual" class="bar-fill"></div></div><div id="v-sexual" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Financial<br>(looting)</div><div class="bar-wrapper"><div id="b-financial" class="bar-fill"></div></div><div id="v-financial" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Social<br>(rage)</div><div class="bar-wrapper"><div id="b-social" class="bar-fill"></div></div><div id="v-social" class="val">--</div></div>
+      <div class="eq-channel"><div class="label">Regional<br>(burning)</div><div class="bar-wrapper"><div id="b-regional" class="bar-fill"></div></div><div id="v-regional" class="val">--</div></div>
+    </div>
+
+    <div class="controls">
+      <div id="alert" class="alert-panel">Capturing Internet Telemetry...</div>
+    </div>
+
+    <div class="composite-wrapper">
+      <div id="composite-fill" class="composite-fill"></div>
+    </div>
+  </div>
 
   <script>
-    const API_KEY = 'fna_live_JFDr8nDD5_FE3EZD-meQmgpchXugZ220TTivLYZwFes';  // ← put your real key here
+    // ═══════════════════════════════════════════════════════════════
+    // PASTE YOUR FREE NEWS API KEY HERE
+    // ═══════════════════════════════════════════════════════════════
+    const API_KEY = 'fna_live_JFDr8nDD5_FE3EZD-meQmgpchXugZ220TTivLYZwFes';
+    // ═══════════════════════════════════════════════════════════════
 
-    async function test() {
-      const el = document.getElementById('result');
-      el.textContent = 'Sending request…';
+    // Your Netlify CORS proxy
+    const PROXY = 'https://cors-proxy-freenewsapi.netlify.app/api/news';
 
+    const KEYWORDS = {
+      societal: 'anxiety', technical: 'outage', individual: 'murder',
+      cultural: 'riots', psychological: 'shooting', political: 'war',
+      geological: 'earthquake', meteorological: 'storm', ideological: 'chaos',
+      geographical: 'volcano', homicidal: 'suicide', pathological: 'anarchy',
+      spiritual: 'anomaly', physical: 'knife', racial: 'terrorist',
+      astronomical: 'aurora', territorial: 'attack', sexual: 'rape',
+      financial: 'looting', social: 'rage', regional: 'burning'
+    };
+
+    const SCALE = {
+      societal: 950, technical: 400, individual: 3000, cultural: 500,
+      psychological: 3000, political: 10500, geological: 400, meteorological: 3000,
+      ideological: 2000, geographical: 200, homicidal: 1150, pathological: 200,
+      spiritual: 200, physical: 800, racial: 1200, astronomical: 600,
+      territorial: 8500, sexual: 1100, financial: 200, social: 400, regional: 1200
+    };
+
+    const CHANNELS = Object.keys(KEYWORDS);
+
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').innerText = now.toLocaleString('en-US', {
+        timeZone: 'America/Los_Angeles',
+        weekday: 'short', month: 'short', day: 'numeric', year: 'numeric',
+        hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'
+      }) + " PT";
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function updateUI(metrics, counts) {
+      for (let ch of CHANNELS) {
+        const val = Math.min(100, Math.max(0, Math.round(metrics[ch] || 0)));
+        document.getElementById('b-' + ch).style.height = val + '%';
+        document.getElementById('v-' + ch).innerText = counts[ch];
+      }
+      const avg = CHANNELS.reduce((s, ch) => s + (metrics[ch] || 0), 0) / CHANNELS.length;
+      document.getElementById('composite-fill').style.width = Math.min(100, avg * 2) + '%';
+
+      document.getElementById('alert').innerHTML =
+        'Live Stream • Reset in 30 seconds • via Netlify Proxy<br>' +
+        'Composite Running Total • DEFCON 3 Round House • 🔶 • Incoming Tsunami DEFCON 1 Cocked Pistol • ♦️ •';
+    }
+
+    async function getCount(q) {
       try {
-        const res = await fetch(
-          'https://freenewsapi.ai/v1/search?q=earthquake&date=24h&size=1',
-          {
-            headers: {
-              'Authorization': 'Bearer ' + API_KEY
-            }
-          }
-        );
-
-        const text = await res.text();
-        el.textContent = 
-          'HTTP Status: ' + res.status + '\n\n' +
-          'Response:\n' + text;
-      } catch (err) {
-        el.textContent = 'ERROR:\n' + err.message;
+        const url = `\( {PROXY}?q= \){encodeURIComponent(q)}&date=24h&size=1&key=${API_KEY}`;
+        const res = await fetch(url);
+        if (!res.ok) return 0;
+        const data = await res.json();
+        return data.total || 0;
+      } catch (e) {
+        return 0;
       }
     }
 
-    test();
+    async function run() {
+      document.getElementById('alert').innerHTML = 'Fetching… 🖕😜👌 🙄 - This is precisely why Aliens don’t visit… 👽';
+      const results = await Promise.all(CHANNELS.map(ch => getCount(KEYWORDS[ch])));
+      const counts = {}, metrics = {};
+      CHANNELS.forEach((ch, i) => {
+        counts[ch] = results[i];
+        metrics[ch] = Math.min(100, (results[i] / SCALE[ch]) * 100);
+      });
+      updateUI(metrics, counts);
+    }
+
+    setInterval(run, 30000);
+    run();
   </script>
 </body>
 </html>
