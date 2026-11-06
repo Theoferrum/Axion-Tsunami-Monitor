@@ -220,9 +220,9 @@
     const SCALE = {
       societal: 950, technical: 400, individual: 3000, cultural: 500,
       psychological: 3000, political: 10500, geological: 400, meteorological: 3000,
-      ideological: 2000, geographical: 200, homicidal: 1150, pathological: 200,
+      ideological: 2000, geographical: 200, homicidal: 1150, pathological: 500,
       spiritual: 200, physical: 800, racial: 1200, astronomical: 600,
-      territorial: 8500, sexual: 1100, financial: 200, social: 400, regional: 1200
+      territorial: 8500, sexual: 1300, financial: 200, social: 400, regional: 1200
     };
 
     const CHANNELS = Object.keys(KEYWORDS);
@@ -248,7 +248,7 @@
       document.getElementById('composite-fill').style.width = Math.min(100, avg * 2) + '%';
 
       document.getElementById('alert').innerHTML =
-        'Live Stream • Update in 60 minutes • via Netlify Proxy<br>' +
+        'Live Stream • Update in 60 minutes • News Articles per Search term via Netlify Proxy<br>' +
         'Composite Running Total • DEFCON 3 Round House • 🔶 • Incoming Tsunami DEFCON 1 Cocked Pistol • ♦️ •';
     }
 
