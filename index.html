@@ -248,7 +248,7 @@
       document.getElementById('composite-fill').style.width = Math.min(100, avg * 2) + '%';
 
       document.getElementById('alert').innerHTML =
-        'Live Stream • Reset in 30 seconds • via Netlify Proxy<br>' +
+        'Live Stream • Update in 60 minutes • via Netlify Proxy<br>' +
         'Composite Running Total • DEFCON 3 Round House • 🔶 • Incoming Tsunami DEFCON 1 Cocked Pistol • ♦️ •';
     }
 
@@ -275,7 +275,7 @@
       updateUI(metrics, counts);
     }
 
-    setInterval(run, 30000);
+    setInterval(run, 60 * 60 * 1000); // once per hour
     run();
   </script>
 </body>
