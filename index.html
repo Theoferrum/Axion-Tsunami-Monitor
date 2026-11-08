@@ -265,7 +265,7 @@
     }
 
     async function run() {
-      document.getElementById('alert').innerHTML = 'Fetching… 🖕😜👌 🙄 - This is precisely why Aliens don’t visit… 👽';
+      document.getElementById('alert').innerHTML = 'Fetching… 🖕😜👌 🙄 - This is precisely why Aliens don’t visit… 🖖👽';
       const results = await Promise.all(CHANNELS.map(ch => getCount(KEYWORDS[ch])));
       const counts = {}, metrics = {};
       CHANNELS.forEach((ch, i) => {
